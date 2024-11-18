@@ -1,0 +1,28 @@
+{
+  "name": "jsgames",
+  "version": "1.0.0",
+  "description": "Simple games and basics wiyh javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RosaToral/JSGames.git"
+  },
+  "keywords": [
+    "javascript",
+    "games",
+    "math"
+  ],
+  "author": "Rosa Guadalupe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RosaToral/JSGames/issues"
+  },
+  "homepage": "https://github.com/RosaToral/JSGames#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
