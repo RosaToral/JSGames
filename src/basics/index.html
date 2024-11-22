@@ -3,9 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hola Mundo</title>
+  <link rel="stylesheet" href="./styles.css">
+  <title>Project 1</title>
 </head>
 <body>
-  <h1>Hola Mundo</h1>
+  <h1>Project 1: Canvas</h1>
+  <div class="controls">
+  <label>Pick animation</label>
+  	<select id="animation">
+  	  <option value="idle">Idle</option>
+  	  <option value="jump">Jump</option>
+  	  <option value="fall">Fall</option>
+  	  <option value="run">Run</option>
+  	  <option value="dizzy">Dizzy</option>
+  	  <option value="sit">Sit</option>
+  	  <option value="roll">Roll</option>
+  	  <option value="bite">Bite</option>
+  	  <option value="ko">KO</option>
+  	  <option value="getHit">Get hit</option>
+  	</select>
+  </div>
+  <canvas id="canvas"></canvas>
+	<script src="./script.js"></script>
 </body>
 </html>

@@ -1,0 +1,24 @@
+.container {
+	width: 800px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 4px dotted pink;
+	border-radius: 10px;
+
+}
+
+#canvas {
+	position: relative;
+	width: 800px;
+	height: 700px;
+	margin: 10px;
+}
+
+.slider {
+	width: 100%;
+}
+.container p {
+	font-size = 25px;
+}

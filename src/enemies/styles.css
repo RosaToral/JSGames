@@ -1,0 +1,18 @@
+#canvas {
+	border: 4px dotted pink;
+	border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	height: 1000px;
+	margin: 10px;
+}
+p {
+	font-size: 40px;
+}
+p a {
+	text-decoration: none;
+	color: slateblue;
+}
