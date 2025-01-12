@@ -5,6 +5,14 @@ const canvasPosition = canvas.getBoundingClientRect();
 const CANVAS_WIDTH = canvas.width = 500;
 const CANVAS_HEIGHT = canvas.height = 700;
 const explosions = [];
+/**
+this array is used to keep track of each explision tha is made.
+When you clic a lot of times, the array let the last clic to finish
+while the next clic is being made.
+If this array does not exist then the last clic will not have an
+animation and you will need to wait until the actual clic is finish
+to clic again.
+*/
 
 class Explosion {
 	constructor (x, y) {
