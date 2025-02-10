@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/RosaToral/JSGames#readme",
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "nodemon": "^3.1.9"
   }
 }
