@@ -5,21 +5,24 @@ window.addEventListener('load', function(event) {
 	const screenHeight = window.innerHeight;
 	const rect = canvas.getBoundingClientRect()
 	const ctx = canvas.getContext('2d');
-	/*const DOWN = "ArrowDown";
+	const DOWN = "ArrowDown";
 	const UP = "ArrowUp";
 	const LEFT = "ArrowLeft";
 	const RIGHT = "ArrowRight";
-	*/
+	/**
 	const UP = "SwipeUp";
 	const DOWN = "SwipeDown";
 	const LEFT = "SwipeLeft";
 	const RIGHT = "SwipeRight";
+	*/
 
 	// const playerImage = document.getElementById('playerImage');
 
 	canvas.width = 800;
 	canvas.height = 720;
-	const enemies = [];
+	let enemies = [];
+	let score = 0;
+	let gameOver = false;
 
 	class InputHandler {
 		constructor () {
@@ -32,7 +35,7 @@ window.addEventListener('load', function(event) {
 			It's used because is simple to manage one array instead of 8 diferent events (up, down, left
 			and right when the key is pressesd and when is released)
 			*/
-		/*	window.addEventListener('keydown', (e) => {
+			window.addEventListener('keydown', (e) => {
 				if ( e.key === DOWN
 					|| e.key === UP
 					|| e.key === LEFT
@@ -46,7 +49,7 @@ window.addEventListener('load', function(event) {
 					|| e.key === LEFT
 					|| e.key === RIGHT)
 					this.keys.splice(this.keys.indexOf(e.key), 1);
-			});*/
+			});
 
 			// Detectar eventos táctiles para simular los movimientos de flechas
 			window.addEventListener('touchstart', (e) => this.handleTouchStart(e), {
@@ -131,13 +134,35 @@ possible is a better aproach
 			this.speed = 0;
 			this.vy = 0;
 			this.weight = 1;
+			this.maxFrames = 8;
+			this.fps = 20;
+			this.frameTimer = 0;
+			this.frameInterval = 1000/this.fps;
 		}
 
 		draw (context) {
 			context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
 		}
 
-		update (input) {
+		update (input, deltaTime, enemies) {
+			// Collision detection
+			enemies.forEach(e => {
+				const dx = (e.x + e.width/2) - (this.x + this.width/2);
+				const dy = (e.y + e.height/2) - (this.y + this.height/2);
+				const distance = Math.sqrt(dx*dx + dy*dy);
+				if (distance < e.width/2 + this.width/2) {
+					gameOver = true;
+				}
+			});
+
+			// Sprite animation
+			if (this.frameTimer > this.frameInterval) {
+				if (this.frameX >= this.maxFrames) this.frameX = 0;
+				else this.frameX++;
+				this.frameTimer = 0;
+			} else this.frameTimer += deltaTime;
+
+			// Controllers
 			if (input.keys.includes(RIGHT))
 				this.speed = 5;
 			else if (input.keys.includes(LEFT))
@@ -155,9 +180,11 @@ possible is a better aproach
 			if (!this.onGround()) {
 				this.vy += this.weight;
 				this.frameY = 1;
+				this.maxFrames = 5;
 			} else {
 				this.vy = 0;
 				this.frameY = 0;
+				this.maxFrames = 8;
 			}
 
 			if (this.y > this.gameHeight - this.height)
@@ -179,14 +206,30 @@ possible is a better aproach
 			this.x = this.gameWidth;
 			this.y = this.gameHeight - this.height;
 			this.frameX = 0;
+			this.maxFrames = 5;
+			this.fps = 20;
+			this.frameTimer = 0;
+			this.frameInterval = 1000/this.fps;
+			this.speed = 8;
+			this.markedForDeletion = false;
 		}
 
 		draw (context) {
 			context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height, this.x, this.y, this.width, this.height);
 		}
 
-		update () {
-			this.x -= 2;
+		update (deltaTime) {
+			if (this.frameTimer > this.frameInterval) {
+				if (this.frameX >= this.maxFrames) this.frameX = 0;
+				else this.frameX++;
+				this.frameTimer = 0;
+			} else this.frameTimer += deltaTime;
+			this.x -= this.speed;
+
+			if (this.x < 0 - this.width) {
+				this.markedForDeletion = true;
+				score++;
+			}
 		}
 	}
 
@@ -224,12 +267,27 @@ possible is a better aproach
 
 		enemies.forEach(e => {
 			e.draw(ctx);
-			e.update();
+			e.update(deltaTime);
 		});
+
+		enemies = enemies.filter(e => !e.markedForDeletion);
 	}
 
-	function displayStatusText () {
-		
+	function displayStatusText (context) {
+		context.font = "700 50px 'Courier New'";
+		context.fillStyle = "black";
+		context.fillText("Score: " + score, 20, 50);
+		context.fillStyle = "white";
+		context.fillText("Score: " + score, 22, 52);
+		if (gameOver) {
+			context.textAlign = "center";
+			context.fillStyle = "black";
+			context.fillText("GAME OVER", canvas.width/2, 200);
+			context.fillStyle = "white";
+			context.fillText("GAME OVER", canvas.width/2 + 2, 202);
+
+			
+		}
 	}
 
 	const inputH = new InputHandler();
@@ -247,10 +305,11 @@ possible is a better aproach
 		background.draw(ctx);
 		background.update();
 		player.draw(ctx);
-		player.update(inputH);
+		player.update(inputH, deltaTime, enemies);
 		handleEnemies(deltaTime);
+		displayStatusText(ctx);
 
-		requestAnimationFrame(animation);
+		if (!gameOver) requestAnimationFrame(animation);
 	}
 
 	animation(0);
