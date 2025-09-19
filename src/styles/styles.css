@@ -1,0 +1,17 @@
+.menu {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: relative;
+	gap: 10px;
+}
+.menu-column {
+	width: 100%;
+	position: relative;
+	border: 1px solid gray;
+	border-radious: 20px;
+	padding: 5px 15px;
+}
+.menu-column li {
+	text-decoration: none;
+}

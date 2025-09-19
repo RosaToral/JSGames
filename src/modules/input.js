@@ -41,11 +41,11 @@ export default class InputHandler {
 		});
 		window.addEventListener('touchstart', (e) => {
 			this.touchX = e.changedTouches[0].pageX;
-			this.touchY = e.changedTouches[0].pageY;
+			//this.touchY = e.changedTouches[0].pageY;
 		});
 		window.addEventListener('touchmove', (e) => {
 			const swipeDistance = e.changedTouches[0].pageX - this.touchX;
-			const swipeDistanceY = e.changedTouches[0].pageY - this.touchY;
+			//const swipeDistanceY = e.changedTouches[0].pageY - this.touchY;
 
 			if (swipeDistance < -this.touchTreshold && this.lastKey !== inputs.PRESS_LEFT) {
 				this.lastKey = inputs.PRESS_LEFT;
@@ -53,11 +53,11 @@ export default class InputHandler {
 				this.lastKey = inputs.PRESS_RIGHT;
 			}
 
-			if (swipeDistanceY < -this.touchTreshold && this.lastKey !== inputs.PRESS_DOWN) {
+			/*if (swipeDistanceY > -this.touchTreshold && this.lastKey !== inputs.PRESS_DOWN) {
 				this.lastKey = inputs.PRESS_DOWN;
-			} else if (swipeDistanceY > this.touchTreshold && this.lastKey !== inputs.PRESS_UP) {
+			} else if (swipeDistanceY < this.touchTreshold && this.lastKey !== inputs.PRESS_UP) {
 				this.lastKey = inputs.PRESS_UP;
-			}
+			}*/
 		});
 		window.addEventListener('touchend', (e) => {
 			this.touchX = 0;
